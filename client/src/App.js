@@ -10,7 +10,7 @@ function App() {
   const { serverMessage, setServerMessage } = useState('');
 
   useEffect(() => {
-    fetch('http://localhost:4000/')
+    fetch('http://localhost:4000/news')
       .then((res) => res.json())
       .then((response) => setServerMessage(response));
   });
