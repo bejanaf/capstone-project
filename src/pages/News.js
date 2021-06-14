@@ -1,3 +1,9 @@
+import styled from 'styled-components';
+
 export default function News() {
-  return <h1>News</h1>;
+  return <Headliner>News</Headliner>;
 }
+
+const Headliner = styled.h1`
+  text-align: center;
+`;

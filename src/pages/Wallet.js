@@ -1,3 +1,9 @@
+import styled from 'styled-components';
+
 export default function Wallet() {
-  return <h1>Wallet</h1>;
+  return <Headliner>Wallet</Headliner>;
 }
+
+const Headliner = styled.h1`
+  text-align: center;
+`;
