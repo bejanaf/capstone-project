@@ -6,15 +6,18 @@ const server = express();
 
 const apiKey = process.env.API_KEY;
 
-const getNews = () => {
-  let news;
+let news = [];
+
+/* function getNews() { */
+
+function getNews() {
   fetch(
     `https://newsapi.org/v2/everything?q=bitcoin&language=en&sortBy=publishedAt&apiKey=910c6caaee6945439c19ae099321f342`
   )
     .then((results) => results.json())
     .then((data) => (news = data));
   return news;
-};
+}
 
 server.use(cors());
 
