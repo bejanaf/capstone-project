@@ -15,11 +15,10 @@ function App() {
         console.log(response);
         setArticles(response);
       });
-  });
+  }, []);
 
   return (
     <div>
-      <h1>Was antwortet der Server</h1>
       <Switch>
         <Route exact path="/">
           <News articles={articles} />
