@@ -54,7 +54,7 @@ const NavBar = styled.div`
   .active {
     svg {
       path {
-        fill: yellow;
+        fill: #00d3d4;
       }
     }
   }

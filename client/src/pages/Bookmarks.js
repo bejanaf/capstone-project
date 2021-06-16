@@ -1,3 +1,9 @@
+import styled from 'styled-components';
+
 export default function Bookmarks() {
-  return <h1>Bookmarks</h1>;
+  return <Headliner>Bookmarks</Headliner>;
 }
+
+const Headliner = styled.h1`
+  text-align: center;
+`;

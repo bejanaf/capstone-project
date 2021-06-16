@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 
-export default function Wallet() {
-  return <Headliner>Wallet</Headliner>;
+export default function News() {
+  return <Headliner>News</Headliner>;
 }
 
 const Headliner = styled.h1`
