@@ -1,38 +1,25 @@
 import express from 'express';
 import cors from 'cors';
 import fetch from 'node-fetch';
+import dotenv from 'dotenv';
 
 const server = express();
 
+dotenv.config();
 const apiKey = process.env.API_KEY;
 
 let news = [];
 
-/* function getNews() { */
-
-function getNews() {
-  fetch(
-    `https://newsapi.org/v2/everything?q=bitcoin&language=en&sortBy=publishedAt&apiKey=910c6caaee6945439c19ae099321f342`
-  )
-    .then((results) => results.json())
-    .then((data) => (news = data));
-  return news;
-}
+fetch(
+  `https://newsapi.org/v2/everything?q=bitcoin&language=en&sortBy=publishedAt&apiKey=${apiKey}`
+)
+  .then((results) => results.json())
+  .then((data) => (news = data.articles.slice(0, 20)));
 
 server.use(cors());
 
-server.get('/news', (req, res) => res.json(getNews()));
+server.get('/news', (req, res) => res.json(news));
 
 server.get('/', (req, res) => res.json('Server is up and running'));
 
 server.listen(4000);
-
-// import fetch from 'node-fetch'
-
-// const apiKey = process.env.API_KEY;
-
-// https://newsapi.org/v2/everything?q=bitcoin&from=2021-05-11&sortBy=publishedAt&apiKey=apiKey
-
-// https://newsapi.org/v2/everything?q=bitcoin&from=2021-05-11&sortBy=publishedAt&apiKey + apiKey).then().then()
-
-// http://localhost:4000/news
