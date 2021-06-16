@@ -19,18 +19,10 @@ function App() {
 
   return (
     <div>
-      <h1>
-        Was antwortet der Server
-        {articles.map((article) => (
-          <section key={article.title}>
-            <p>{article.title}</p>
-            <p>{article.description}</p>
-          </section>
-        ))}
-      </h1>
+      <h1>Was antwortet der Server</h1>
       <Switch>
         <Route exact path="/">
-          <News />
+          <News articles={articles} />
         </Route>
         <Route path="/bookmarks">
           <Bookmarks />
