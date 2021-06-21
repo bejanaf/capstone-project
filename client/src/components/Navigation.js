@@ -34,6 +34,7 @@ const NavigationIcon = styled.span`
   svg {
     width: 2rem;
     height: 2rem;
+    fill: white;
   }
 `;
 
