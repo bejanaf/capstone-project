@@ -32,6 +32,7 @@ export default function Navigation() {
 }
 
 const NavigationWrapper = styled.div`
+  align-items: center;
   background: repeating-linear-gradient(
       45deg,
       transparent,
@@ -40,12 +41,10 @@ const NavigationWrapper = styled.div`
       var(--black) 0.2px
     ),
     linear-gradient(to top, var(--black) 60%, var(--primary));
-
-  align-items: center;
   bottom: 0;
   box-shadow: 5px 5px 5px var(--primary);
+  color: var(--white);
   display: flex;
-  color: white;
   justify-content: space-around;
   left: 0;
   padding-bottom: 0.4rem;
