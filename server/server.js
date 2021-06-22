@@ -10,7 +10,7 @@ const apiKey = process.env.API_KEY;
 
 server.use(cors());
 
-server.get('/news', (req, res) => {
+server.get('/api/news', (req, res) => {
   fetch(
     `https://newsapi.org/v2/everything?q=bitcoin&language=en&sortBy=publishedAt&apiKey=${apiKey}`
   )

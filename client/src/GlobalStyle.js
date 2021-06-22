@@ -14,8 +14,9 @@ export default createGlobalStyle`
     --secondary-dark: hsl(360, 100%, 32%);
     --secondary-darkest: hsl(360, 100%, 20%);
     --white: hsl(360, 100%, 100%);
-    --black: hsl(0, 0, 0);
-    --grey-dark: hsl(0, 0%, 8%);
+    --black: hsl(0, 0%, 0%);
+    --grey-dark: hsl(215, 0%, 72.5%);
+    --grey-darkest: hsl(0, 0%, 8%);
 
     --ff-sans: 'Roboto';
 }
@@ -28,6 +29,7 @@ export default createGlobalStyle`
 
 body, h1, h2, h3, h4, h5, h6, ol, ul {
     margin: 0;
+    margin-top: 0.5rem;
     padding: 0;
     font-weight: normal;
     color: white;

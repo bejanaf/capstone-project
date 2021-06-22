@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import { NavLink } from 'react-router-dom';
 import { ReactComponent as NewsIcon } from '../image/news-icon.svg';
 import { ReactComponent as BitcoinIcon } from '../image/btc-icon.svg';
@@ -7,56 +7,77 @@ import { ReactComponent as WalletIcon } from '../image/wallet.svg';
 export default function Navigation() {
   return (
     <NavigationWrapper>
-      <NavBar>
-        <NavLink exact to="/" className="navButton">
-          <NavigationIcon>
-            <NewsIcon />
-          </NavigationIcon>
-        </NavLink>
+      <NavLinkStyled to="/news" className="navButton">
+        <IconNameWrapper>
+          <NewsIcon />
+          <IconName>News</IconName>
+        </IconNameWrapper>
+      </NavLinkStyled>
 
-        <NavLink to="/bookmarks" className="navButton">
-          <NavigationIcon>
-            <BitcoinIcon />
-          </NavigationIcon>
-        </NavLink>
+      <NavLinkStyled to="/bookmarks" className="navButton">
+        <IconNameWrapper>
+          <BitcoinIcon />
+          <IconName>Bookmarks</IconName>
+        </IconNameWrapper>
+      </NavLinkStyled>
 
-        <NavLink to="/wallet" className="navButton">
-          <NavigationIcon>
-            <WalletIcon />
-          </NavigationIcon>
-        </NavLink>
-      </NavBar>
+      <NavLinkStyled to="/wallet" className="navButton">
+        <IconNameWrapper>
+          <WalletIcon />
+          <IconName>Wallet</IconName>
+        </IconNameWrapper>
+      </NavLinkStyled>
     </NavigationWrapper>
   );
 }
 
-const NavigationIcon = styled.span`
-  svg {
-    width: 2rem;
-    height: 2rem;
-    fill: white;
-  }
-`;
-
 const NavigationWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const NavBar = styled.div`
-  border: 3px solid black;
-  border-radius: 100vh;
+  align-items: center;
+  background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 0.1px,
+      var(--black) 0.1px,
+      var(--black) 0.2px
+    ),
+    linear-gradient(to top, var(--black) 60%, var(--primary));
+  bottom: 0;
+  box-shadow: 5px 5px 5px var(--primary);
+  color: var(--white);
   display: flex;
   justify-content: space-around;
-  justify-items: center;
-  padding-top: 0.25rem;
-  width: 90vw;
+  left: 0;
+  padding-bottom: 0.4rem;
+  padding-top: 0.9rem;
+  position: sticky;
+  width: 100%;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    fill: var(--grey-dark);
+  }
 
   .active {
+    color: var(--primary);
     svg {
       path {
-        fill: #00d3d4;
+        fill: var(--primary);
       }
     }
   }
+`;
+
+const IconNameWrapper = styled.div`
+  display: grid;
+  place-items: center;
+`;
+
+const NavLinkStyled = styled(NavLink)`
+  color: var(--grey-dark);
+`;
+
+const IconName = styled.p`
+  font-size: 0.75rem;
+  margin: 0;
 `;
