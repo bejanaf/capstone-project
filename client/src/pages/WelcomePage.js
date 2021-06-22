@@ -5,7 +5,7 @@ import { ReactComponent as Logo } from '../image/Logo.svg';
 export default function WelcomePage() {
   return (
     <PageWrapper>
-      <HeadLiner>Welcome to</HeadLiner>
+      <h1>Welcome to</h1>
       <Logo />
       <AppName>Crypto Starter</AppName>
 
@@ -30,8 +30,6 @@ const PageWrapper = styled.div`
     margin-top: 2.5rem;
   }
 `;
-
-const HeadLiner = styled.h1``;
 
 const AppName = styled.h2`
   color: var(--primary);
