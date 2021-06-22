@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import Navigation from '../components/Navigation';
 
 export default function News({ articles }) {
   console.log('show input', articles);
@@ -41,21 +42,13 @@ export default function News({ articles }) {
             )}
           </p>
         ))}
+      <Navigation />
     </>
   );
 }
 
-const Author = styled.p`
-  font-weight: bold;
-`;
-
-const NewsImage = styled.img`
-  margin-top: 0.625rem;
-  width: 22.188rem;
-`;
-
 const ArticleWrapper = styled.div`
-  background-color: var(--grey-dark);
+  background-color: var(--grey-darkest);
   display: flex;
   flex-direction: column;
   padding: 0 0.625rem;
@@ -76,10 +69,19 @@ const TitleAndAutorWrapper = styled.div`
 `;
 
 const Title = styled.h2`
-  background-color: var(--grey-dark);
+  background-color: var(--grey-darkest);
 `;
 
 const PublishedAt = styled.p`
   display: flex;
   flex-direction: column;
+`;
+
+const Author = styled.p`
+  font-weight: bold;
+`;
+
+const NewsImage = styled.img`
+  margin-top: 0.625rem;
+  width: 22.188rem;
 `;
