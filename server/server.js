@@ -9,14 +9,14 @@ const __dirname = dirname(import.meta.url);
 
 const server = express();
 
-server.get('/health', (req, res) =>
-  res.json({ message: 'Server is up and running' })
-);
-
 dotenv.config();
 const apiKey = process.env.API_KEY;
 
 server.use(cors());
+
+server.get('/health', (req, res) =>
+  res.json({ message: 'Server is up and running' })
+);
 
 server.get('/api/news', (req, res) => {
   fetch(
@@ -30,8 +30,6 @@ server.use(express.static(path.join(__dirname, '../../client/build')));
 server.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
-
-// Muss ich? Oder zusätzlich in meine api/news?
 
 const port = process.env.PORT || 4000;
 server.listen(port);
