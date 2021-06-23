@@ -26,9 +26,9 @@ server.get('/api/news', (req, res) => {
     .then((data) => res.json(data.articles.slice(0, 20)));
 });
 
-server.use(express.static(path.join(__dirname, '../client/build')));
+server.use(express.static(path.join(__dirname, '../../client/build')));
 server.get('/*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build', 'index.html'));
+  res.sendFile(path.join(__dirname, '../../client/build', 'index.html'));
 });
 
 // Muss ich? Oder zusätzlich in meine api/news?
