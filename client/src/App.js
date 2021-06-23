@@ -8,8 +8,10 @@ import { useEffect, useState } from 'react';
 function App() {
   const [articles, setArticles] = useState([]);
 
+  /* http://localhost:4000 */
+
   useEffect(() => {
-    fetch('http://localhost:4000/api/news')
+    fetch('/api/news')
       .then((res) => res.json())
       .then((response) => {
         console.log(response);
