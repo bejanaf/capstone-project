@@ -1,14 +1,19 @@
 import { Switch, Route } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import Bookmarks from './pages/Bookmarks';
 import WelcomePage from './pages/WelcomePage';
 import News from './pages/News';
-import Bookmarks from './pages/Bookmarks';
 import Wallet from './pages/Wallet';
-import { useEffect, useState } from 'react';
+import { loadFromLocal, saveToLocal } from './lib/localStorage';
 
 function App() {
   const [articles, setArticles] = useState([]);
+  const [bookmarks, setBookmarks] = useState(loadFromLocal('bookmarks') ?? []);
+  console.log('Ist hier etwas drinnen?', bookmarks);
 
-  /* http://localhost:4000 */
+  useEffect(() => {
+    saveToLocal('bookmarks', bookmarks);
+  }, [bookmarks]);
 
   useEffect(() => {
     fetch('/api/news')
@@ -19,6 +24,18 @@ function App() {
       });
   }, []);
 
+  function toggleBookmarkNews(bookmarkNews) {
+    const likedNews = articles.map((article) => {
+      if (article === bookmarkNews) {
+        article.isFavorite = !article.isFavorite;
+      }
+      return article;
+    });
+    setArticles(likedNews);
+    const favoriteArticles = articles.filter((article) => article.isFavorite);
+    setBookmarks(favoriteArticles);
+  }
+
   return (
     <div>
       <Switch>
@@ -27,11 +44,14 @@ function App() {
         </Route>
 
         <Route path="/news">
-          <News articles={articles} />
+          <News articles={articles} onToggleBookmarkNews={toggleBookmarkNews} />
         </Route>
 
         <Route path="/bookmarks">
-          <Bookmarks />
+          <Bookmarks
+            bookmarks={bookmarks}
+            onToggleBookmarkNews={toggleBookmarkNews}
+          />
         </Route>
 
         <Route path="/wallet">
