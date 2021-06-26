@@ -72,8 +72,8 @@ const ArticleWrapper = styled.div`
 const FavoriteButton = styled.button`
   background-color: transparent;
   border: none;
-  left: 25%;
   cursor: pointer;
+  left: 25%;
   position: absolute;
 `;
 
