@@ -1,13 +1,15 @@
 import styled from 'styled-components';
 import Navigation from '../components/Navigation';
+import BookmarkCards from '../components/BookmarkCard';
 
 export default function Bookmarks({ bookmarks, onToggleBookmarkNews }) {
   return (
     <>
       <Headliner>Bookmarks</Headliner>
-      {bookmarks.map((bookmark) => (
-        <h2>{bookmark.title}</h2>
-      ))}
+      <BookmarkCards
+        bookmarks={bookmarks}
+        onToggleBookmarkNews={onToggleBookmarkNews}
+      />
       <Navigation />
     </>
   );
