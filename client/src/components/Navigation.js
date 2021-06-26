@@ -42,7 +42,6 @@ const NavigationWrapper = styled.div`
     ),
     linear-gradient(to top, var(--black) 60%, var(--primary));
   bottom: 0;
-  box-shadow: 5px 5px 5px var(--primary);
   color: var(--white);
   display: flex;
   justify-content: space-around;
