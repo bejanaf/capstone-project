@@ -54,18 +54,9 @@ const ArticleWrapper = styled.div`
   display: flex;
   flex-direction: column;
   padding: 0 0.625rem;
-  position: relative;
 
   a {
     text-decoration: none;
-  }
-
-  svg {
-    fill: orange;
-    height: 2.5rem;
-    stroke: var(--black);
-    stroke-width: 3px;
-    width: 2.5rem;
   }
 `;
 
@@ -73,8 +64,16 @@ const FavoriteButton = styled.button`
   background-color: transparent;
   border: none;
   cursor: pointer;
-  left: 25%;
+  right: 10%;
   position: absolute;
+
+  svg {
+    fill: orange;
+    height: 2.5rem;
+    stroke: var(--black);
+    stroke-width: 15px;
+    width: 2.5rem;
+  }
 `;
 
 const HeadLiner = styled.h1`
