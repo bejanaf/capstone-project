@@ -9,7 +9,6 @@ import { loadFromLocal, saveToLocal } from './lib/localStorage';
 function App() {
   const [articles, setArticles] = useState([]);
   const [bookmarks, setBookmarks] = useState(loadFromLocal('bookmarks') ?? []);
-  console.log('Ist hier etwas drinnen?', bookmarks);
 
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
