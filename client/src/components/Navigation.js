@@ -3,6 +3,7 @@ import { NavLink } from 'react-router-dom';
 import { ReactComponent as NewsIcon } from '../image/news-icon.svg';
 import { ReactComponent as BitcoinIcon } from '../image/btc-icon.svg';
 import { ReactComponent as WalletIcon } from '../image/wallet.svg';
+import { ReactComponent as TopCoinsIcon } from '../image/topCoins.svg';
 
 export default function Navigation() {
   return (
@@ -18,6 +19,13 @@ export default function Navigation() {
         <IconNameWrapper>
           <BitcoinIcon />
           <IconName>Bookmarks</IconName>
+        </IconNameWrapper>
+      </NavLinkStyled>
+
+      <NavLinkStyled to="/topCoins" className="navButton">
+        <IconNameWrapper>
+          <TopCoinsIcon />
+          <IconName>Top 25</IconName>
         </IconNameWrapper>
       </NavLinkStyled>
 
