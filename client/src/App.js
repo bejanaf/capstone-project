@@ -1,14 +1,16 @@
 import { Switch, Route } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import { loadFromLocal, saveToLocal } from './lib/localStorage';
 import Bookmarks from './pages/Bookmarks';
 import WelcomePage from './pages/WelcomePage';
 import News from './pages/News';
 import Wallet from './pages/Wallet';
-import { loadFromLocal, saveToLocal } from './lib/localStorage';
+import TopCoins from './pages/TopCoins';
 
 function App() {
   const [articles, setArticles] = useState([]);
   const [bookmarks, setBookmarks] = useState(loadFromLocal('bookmarks') ?? []);
+  const [topCoins, setTopCoins] = useState([]);
 
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
@@ -21,6 +23,23 @@ function App() {
         console.log(response);
         setArticles(response);
       });
+  }, []);
+
+  useEffect(() => {
+    fetch(
+      'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=24h'
+    )
+      .then((result) => result.json())
+      .then((topCoins) => setTopCoins(topCoins))
+      .catch((error) => console.error(error.message));
+
+    const updatedTopCoins = topCoins.map((coins) => {
+      return {
+        ...coins,
+        isFavorite: false,
+      };
+    });
+    setTopCoins(updatedTopCoins);
   }, []);
 
   function toggleBookmarkNews(bookmarkNews) {
@@ -51,6 +70,10 @@ function App() {
             bookmarks={bookmarks}
             onToggleBookmarkNews={toggleBookmarkNews}
           />
+        </Route>
+
+        <Route path="/topCoins">
+          <TopCoins topCoins={topCoins} />
         </Route>
 
         <Route path="/wallet">
