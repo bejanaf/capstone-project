@@ -13,8 +13,8 @@ export default function NewsCard({ articles, onToggleBookmarkNews }) {
                 articleToCheckIndex !== index
             )
         )
-        .map((article) => (
-          <p>
+        .map((article, index) => (
+          <section key={index + article}>
             {article.urlToImage === null ||
             article.description === 0 ||
             article.author === null ? null : (
@@ -43,7 +43,7 @@ export default function NewsCard({ articles, onToggleBookmarkNews }) {
                 </p>
               </ArticleWrapper>
             )}
-          </p>
+          </section>
         ))}
     </>
   );
