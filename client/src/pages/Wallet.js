@@ -7,10 +7,7 @@ export default function Wallet({ favoriteCoins }) {
       <Headliner>Wallet</Headliner>
       {favoriteCoins.map((favoriteCoin) => (
         <WalletWrapper>
-          <span>
-            LocalStorage test, disyplay name of favorite coin:{' '}
-            {favoriteCoin.name}
-          </span>
+          <span>{favoriteCoin.name}</span>
         </WalletWrapper>
       ))}
       <Navigation />
