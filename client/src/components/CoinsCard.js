@@ -17,7 +17,7 @@ export default function Coinscard({ topCoins, onToggleFavoriteCoins }) {
           <section>
             <CoinNameSymbole>
               <CoinImage src={topCoin.image} alt="Image of Coin" />
-              <CoinName>
+              <span>
                 {topCoin.name}{' '}
                 <FavoriteIcon
                   src={favoriteIcon}
@@ -29,7 +29,7 @@ export default function Coinscard({ topCoins, onToggleFavoriteCoins }) {
                       : { opacity: '30%' }
                   }
                 />
-              </CoinName>
+              </span>
               <CoinSymbole>{topCoin.symbol}</CoinSymbole>
             </CoinNameSymbole>
             <CoinPriceChange>
@@ -85,12 +85,10 @@ const CoinImage = styled.img`
   width: 1.1rem;
 `;
 
-const CoinName = styled.span``;
-
 const FavoriteIcon = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
   cursor: pointer;
+  height: 1.1rem;
+  width: 1.1rem;
 `;
 
 const CoinSymbole = styled.span`
