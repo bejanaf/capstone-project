@@ -15,8 +15,6 @@ function App() {
     loadFromLocal('favoriteCoins') ?? []
   );
 
-  console.log('topCoins:', topCoins);
-
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
   }, [bookmarks]);
@@ -80,8 +78,6 @@ function App() {
     const favoriteCoins = topCoins.filter((topCoin) => topCoin.isFavorite);
     setFavoriteCoins(favoriteCoins);
   }
-
-  console.log('Zeig mir die Favoriten:', favoriteCoins);
 
   return (
     <div>
