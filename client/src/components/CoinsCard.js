@@ -12,8 +12,8 @@ export default function Coinscard({ topCoins }) {
   return (
     <>
       {topCoins.map((topCoin, index) => (
-        <CoinWrapper>
-          <section key={index + topCoin}>
+        <CoinWrapper key={index + topCoin}>
+          <section>
             <CoinNameSymbole>
               <CoinImage src={topCoin.image} alt="Image of Coin" />
               <span>{topCoin.name}</span>
@@ -45,11 +45,11 @@ export default function Coinscard({ topCoins }) {
 }
 
 const CoinWrapper = styled.div`
+  border-bottom: 1px solid grey;
   display: flex;
   flex-direction: column;
-  width: 100vw;
   padding-bottom: 0.2rem;
-  border-bottom: 1px solid grey;
+  width: 100vw;
 
   section {
     display: flex;
@@ -65,11 +65,11 @@ const CoinNameSymbole = styled.div`
 `;
 
 const CoinImage = styled.img`
-  width: 1.1rem;
-  height: 1.1rem;
   background-color: white;
   border-radius: 50%;
+  height: 1.1rem;
   padding: 0.1rem;
+  width: 1.1rem;
 `;
 
 const CoinSymbole = styled.span`
@@ -91,10 +91,10 @@ const NegativePrice = styled.span`
 `;
 
 const CoinPricePercent = styled.span`
+  align-items: flex-end;
   display: flex;
   font-size: 0.7rem;
   height: 1.344rem;
-  align-items: flex-end;
 `;
 
 const CoinCapVolume = styled.div`
@@ -103,8 +103,8 @@ const CoinCapVolume = styled.div`
 `;
 
 const CoinMarketCapVolume = styled.span`
+  align-items: flex-end;
   display: flex;
   font-size: 0.7rem;
   height: 1.344rem;
-  align-items: flex-end;
 `;
