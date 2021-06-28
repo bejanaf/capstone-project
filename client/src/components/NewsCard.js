@@ -76,10 +76,6 @@ const FavoriteButton = styled.button`
   }
 `;
 
-const HeadLiner = styled.h1`
-  text-align: center;
-`;
-
 const TitleAndAutorWrapper = styled.div`
   display: flex;
   justify-content: space-between;
