@@ -10,11 +10,24 @@ import TopCoins from './pages/TopCoins';
 function App() {
   const [articles, setArticles] = useState([]);
   const [bookmarks, setBookmarks] = useState(loadFromLocal('bookmarks') ?? []);
-  const [topCoins, setTopCoins] = useState([]);
+  const [topCoins, setTopCoins] = useState(loadFromLocal('topCoins') ?? []);
+  const [favoriteCoins, setFavoriteCoins] = useState(
+    loadFromLocal('favoriteCoins') ?? []
+  );
+
+  console.log('topCoins:', topCoins);
 
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
   }, [bookmarks]);
+
+  useEffect(() => {
+    saveToLocal('topCoins', topCoins);
+  }, [topCoins]);
+
+  useEffect(() => {
+    saveToLocal('favoriteCoins', favoriteCoins);
+  }, [favoriteCoins]);
 
   useEffect(() => {
     fetch('/api/news')
@@ -30,16 +43,18 @@ function App() {
       'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=24h'
     )
       .then((result) => result.json())
-      .then((topCoins) => setTopCoins(topCoins))
+      .then((topCoins) => {
+        const updatedTopCoins = topCoins.map((topCoin) => {
+          return {
+            ...topCoin,
+            isFavorite: favoriteCoins.some(
+              (favoriteCoin) => favoriteCoin.id === topCoin.id
+            ),
+          };
+        });
+        setTopCoins(updatedTopCoins);
+      })
       .catch((error) => console.error(error.message));
-
-    const updatedTopCoins = topCoins.map((coins) => {
-      return {
-        ...coins,
-        isFavorite: false,
-      };
-    });
-    setTopCoins(updatedTopCoins);
   }, []);
 
   function toggleBookmarkNews(bookmarkNews) {
@@ -53,6 +68,20 @@ function App() {
     const favoriteArticles = articles.filter((article) => article.isFavorite);
     setBookmarks(favoriteArticles);
   }
+
+  function toggleFavoriteCoins(walletCoins) {
+    const likedCoins = topCoins.map((topCoin) => {
+      if (topCoin === walletCoins) {
+        topCoin.isFavorite = !topCoin.isFavorite;
+      }
+      return topCoin;
+    });
+    setTopCoins(likedCoins);
+    const favoriteCoins = topCoins.filter((topCoin) => topCoin.isFavorite);
+    setFavoriteCoins(favoriteCoins);
+  }
+
+  console.log('Zeig mir die Favoriten:', favoriteCoins);
 
   return (
     <div>
@@ -73,11 +102,15 @@ function App() {
         </Route>
 
         <Route path="/topCoins">
-          <TopCoins topCoins={topCoins} />
+          <TopCoins
+            topCoins={topCoins}
+            favoriteCoins={favoriteCoins}
+            onToggleFavoriteCoins={toggleFavoriteCoins}
+          />
         </Route>
 
         <Route path="/wallet">
-          <Wallet />
+          <Wallet favoriteCoins={favoriteCoins} />
         </Route>
       </Switch>
     </div>
