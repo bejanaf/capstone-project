@@ -7,11 +7,13 @@ export default function News({ articles, onToggleBookmarkNews }) {
   console.log(articles.indexOf(articles.title));
   return (
     <>
-      <HeadLiner>Latest News</HeadLiner>
-      <NewsCard
-        articles={articles}
-        onToggleBookmarkNews={onToggleBookmarkNews}
-      />
+      <NewsWrapper>
+        <HeadLiner>Latest News</HeadLiner>
+        <NewsCard
+          articles={articles}
+          onToggleBookmarkNews={onToggleBookmarkNews}
+        />
+      </NewsWrapper>
       <Navigation />
     </>
   );
@@ -19,4 +21,8 @@ export default function News({ articles, onToggleBookmarkNews }) {
 
 const HeadLiner = styled.h1`
   text-align: center;
+`;
+
+const NewsWrapper = styled.section`
+  margin-bottom: 4.5rem;
 `;

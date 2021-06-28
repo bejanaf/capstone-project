@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import favoriteIcon from '../image/star.png';
 
-export default function Coinscard({ topCoins }) {
+export default function Coinscard({ topCoins, onToggleFavoriteCoins }) {
   function ShortenLargeNumbers(num) {
     if (num > 999999999) {
       return Math.sign(num) * (Math.abs(num) / 1000000000).toFixed(1) + ' B';
@@ -16,7 +17,19 @@ export default function Coinscard({ topCoins }) {
           <section>
             <CoinNameSymbole>
               <CoinImage src={topCoin.image} alt="Image of Coin" />
-              <span>{topCoin.name}</span>
+              <span>
+                {topCoin.name}{' '}
+                <FavoriteIcon
+                  src={favoriteIcon}
+                  alt="Star image of icon"
+                  onClick={() => onToggleFavoriteCoins(topCoin)}
+                  style={
+                    topCoin.isFavorite
+                      ? { opacity: '100%' }
+                      : { opacity: '30%' }
+                  }
+                />
+              </span>
               <CoinSymbole>{topCoin.symbol}</CoinSymbole>
             </CoinNameSymbole>
             <CoinPriceChange>
@@ -69,6 +82,12 @@ const CoinImage = styled.img`
   border-radius: 50%;
   height: 1.1rem;
   padding: 0.1rem;
+  width: 1.1rem;
+`;
+
+const FavoriteIcon = styled.img`
+  cursor: pointer;
+  height: 1.1rem;
   width: 1.1rem;
 `;
 
