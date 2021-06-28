@@ -56,7 +56,7 @@ const NavigationWrapper = styled.div`
   left: 0;
   padding-bottom: 0.4rem;
   padding-top: 0.9rem;
-  position: sticky;
+  position: fixed;
   width: 100%;
 
   svg {
