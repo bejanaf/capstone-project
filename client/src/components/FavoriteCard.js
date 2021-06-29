@@ -49,6 +49,7 @@ export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
           </CoinCapVolume>
         </section>
       </CoinWrapper>
+      )
     </>
   );
 }

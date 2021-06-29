@@ -3,7 +3,7 @@ import { useHistory, Link } from 'react-router-dom';
 import Navigation from '../components/Navigation';
 import { ReactComponent as Close } from '../image/close.svg';
 import { ReactComponent as PlusIcon } from '../image/add.svg';
-import TrashCan from '../image/delete1.png';
+import TrashCan from '../image/delete.png';
 
 export default function WalletOverview({ portfolioCoins }) {
   const history = useHistory();
