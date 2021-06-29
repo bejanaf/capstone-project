@@ -14,6 +14,7 @@ function App() {
   const [favoriteCoins, setFavoriteCoins] = useState(
     loadFromLocal('favoriteCoins') ?? []
   );
+  const [exchanges, setExchanges] = useState(loadFromLocal('exchanges' ?? []));
 
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
@@ -26,6 +27,10 @@ function App() {
   useEffect(() => {
     saveToLocal('favoriteCoins', favoriteCoins);
   }, [favoriteCoins]);
+
+  useEffect(() => {
+    saveToLocal('exchanges', exchanges);
+  }, [exchanges]);
 
   useEffect(() => {
     fetch('/api/news')
@@ -53,6 +58,13 @@ function App() {
         setTopCoins(updatedTopCoins);
       })
       .catch((error) => console.error(error.message));
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.coingecko.com/api/v3/exchanges')
+      .then((result) => result.json())
+      .then((listOfExchanges) => setExchanges(listOfExchanges))
+      .catch((error) => console.error(error));
   }, []);
 
   function toggleBookmarkNews(bookmarkNews) {
@@ -106,7 +118,7 @@ function App() {
         </Route>
 
         <Route path="/wallet">
-          <Wallet favoriteCoins={favoriteCoins} />
+          <Wallet favoriteCoins={favoriteCoins} exchanges={exchanges} />
         </Route>
       </Switch>
     </div>
