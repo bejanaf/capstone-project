@@ -1,155 +1,160 @@
-import styled from 'styled-components';
-import { useHistory, Link } from 'react-router-dom';
+import styled from 'styled-components/macro';
 import Navigation from '../components/Navigation';
 import { ReactComponent as Close } from '../image/close.svg';
 import { ReactComponent as PlusIcon } from '../image/add.svg';
 import TrashCan from '../image/delete.png';
-
-export default function WalletOverview({ portfolioCoins }) {
-  const history = useHistory();
-  const clickedCoin = history.location.state;
-
-  const historicalCoins = portfolioCoins.filter(
-    (historicalCoin) => historicalCoin.name === clickedCoin.name
-  );
-
-  function navigateToForm() {
-    history.push('/portfolio/addform', clickedCoin);
-  }
-
+export default function WalletOverview({
+  historicalCoins,
+  selectedCoin,
+  onSetWalletOverview,
+  onSetFormView,
+  portfolioCoins,
+}) {
   return (
-    <>
-      <HeadlineWrapper>
-        <HeadlineName>{clickedCoin.name} History</HeadlineName>
-        {/* useState um zu closen */}
-        <CloseIcon title="Close" role="img" />
-      </HeadlineWrapper>
-      <div>
-        <span>Name</span>
-        <span>Price</span>
-        <span>Value</span>
-      </div>
-      {historicalCoins.map((coin) => {
-        return (
-          <>
-            <CoinWrapper>
-              <CoinRow>
+    <Modal>
+      <div className="modal_open">
+        {selectedCoin !== undefined && (
+          <ContentWrapper>
+            <HeadlineWrapper>
+              <Headline>{selectedCoin.name} History</Headline>
+              <CloseIcon
+                title="Close"
+                role="img"
+                onClick={() => onSetWalletOverview(false)}
+              />
+            </HeadlineWrapper>
+            <TableDescription>
+              <TableName>Name</TableName>
+              <TablePrice>Price</TablePrice>
+              <span>Value</span>
+            </TableDescription>
+            {portfolioCoins.map((coin, index) => (
+              <CoinWrapper key={index + coin}>
                 <ExchangeWrapper>
                   <Exchange>{coin.exchange}</Exchange>
                   <Date>{coin.date}</Date>
                 </ExchangeWrapper>
-                <CoinData>
-                  <PriceWrapper>
-                    <CoinPrice>${parseInt(coin.price).toFixed(2)}</CoinPrice>
-                    <BuyOrSell>{coin.buyOrSell}</BuyOrSell>
-                  </PriceWrapper>
-                  <HoldingsWrapper>
-                    {coin.buyOrSell === 'buy' ? (
-                      <HoldingsBuy>
-                        ${parseInt(coin.price * coin.quantity).toFixed(2)}
-                      </HoldingsBuy>
-                    ) : (
-                      <HoldingsSell>
-                        ${parseInt(coin.price * coin.quantity).toFixed(2)}
-                      </HoldingsSell>
-                    )}
-                    {coin.buyOrSell === 'buy' ? (
-                      <QuantityBuy>
-                        {coin.quantity} {coin.symbol}
-                      </QuantityBuy>
-                    ) : (
-                      <QuantitySell>
-                        {coin.quantity * -1} {coin.symbol}
-                      </QuantitySell>
-                    )}
-                  </HoldingsWrapper>
-                </CoinData>
-                <TrashCanImage title="TrashCan" role="img" />
-              </CoinRow>
-            </CoinWrapper>
-          </>
-        );
-      })}
-      <AddButton onClick={navigateToForm}>
-        Add to Wallet
-        <AddSign title="Plus" role="img" />
-      </AddButton>
+                <PriceWrapper>
+                  <CoinPrice>${parseInt(coin.price).toFixed(2)}</CoinPrice>
+                  <BuyOrSell>{coin.buyOrSell}</BuyOrSell>
+                </PriceWrapper>
+                <HoldingsWrapper>
+                  {coin.buyOrSell === 'buy' ? (
+                    <HoldingsBuy>
+                      ${parseInt(coin.price * coin.quantity).toFixed(2)}
+                    </HoldingsBuy>
+                  ) : (
+                    <HoldingsSell>
+                      ${parseInt(coin.price * coin.quantity).toFixed(2)}
+                    </HoldingsSell>
+                  )}
+                  {coin.buyOrSell === 'buy' ? (
+                    <QuantityBuy>
+                      {coin.quantity} {coin.symbol}
+                    </QuantityBuy>
+                  ) : (
+                    <QuantitySell>
+                      {coin.quantity * -1} {coin.symbol}
+                    </QuantitySell>
+                  )}
+                  <TrashCanImage title="TrashCan" src={TrashCan} />
+                </HoldingsWrapper>
+              </CoinWrapper>
+            ))}
+            <AddButton onClick={() => onSetFormView(true)}>
+              <AddSign title="Plus" role="img" />
+            </AddButton>
+          </ContentWrapper>
+        )}
+      </div>
+      <div className="modal_open--overlay" />
       <Navigation />
-    </>
+    </Modal>
   );
 }
 
-const HeadlineWrapper = styled.div`
-  padding-bottom: 1rem;
-  display: flex;
-  justify-content: center;
-  font-weight: bold;
-  margin-top: 110px;
-  padding-bottom: 41px;
+const Modal = styled.div`
   position: relative;
-  width: 346px;
+  .modal_open {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    color: var(--black);
+    display: flex;
+    flex-flow: column wrap;
+    max-width: 90vw;
+    margin: auto;
+    padding: 1rem;
+    position: sticky;
+    top: 50%;
+    z-index: 100;
+  }
+
+  .modal_open--overlay {
+    background-color: rgba(0, 0, 0, 0.92);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 9;
+  }
 `;
 
-const HeadlineName = styled.h2`
-  padding: 0;
-  margin: 0;
+const ContentWrapper = styled.div`
+  display: grid;
+  place-items: center;
+`;
+
+const HeadlineWrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  position: relative;
+`;
+
+const Headline = styled.h2`
+  background-color: var(--white);
+  color: var(--black);
+  font-weight: bold;
+  padding-bottom: 1rem;
+  text-align: center;
 `;
 
 const CloseIcon = styled(Close)`
-  left: 15rem;
-  top: 0.15rem;
-  height: 1.2rem;
-  width: 1.2rem;
-  margin: 0 1.5rem 0 3rem;
   cursor: pointer;
+  height: 1.5rem;
   position: absolute;
+  right: -3rem;
+  width: 1.5rem;
+`;
+
+const TableDescription = styled.section`
+  border-bottom: 1px solid var(--black);
+  display: flex;
+`;
+
+const TableName = styled.span`
+  padding-right: 4rem;
+`;
+
+const TablePrice = styled.span`
+  padding-right: 4rem;
 `;
 
 const CoinWrapper = styled.div`
-  display: flex;
-  justify-content: center;
-`;
-
-const CoinRow = styled.div`
+  border-bottom: 1px solid #d7d7d7;
+  cursor: pointer;
   display: flex;
   justify-content: start;
-  align-items: center;
-  width: 328px;
-  height: 5.625rem;
-  border-bottom: 1px solid #d7d7d7;
-`;
-
-const NoteRow = styled.div`
-  display: flex;
-  justify-content: start;
-  align-items: center;
-  height: 1.25rem;
-  border-bottom: 1px solid #d7d7d7;
 `;
 
 const ExchangeWrapper = styled.span`
   display: flex;
   flex-direction: column;
+  flex-wrap: wrap;
   text-align: left;
-  justify-content: space-between;
-  width: 4rem;
-`;
-
-const PriceWrapper = styled.span`
-  display: flex;
-  flex-direction: column;
-  text-align: right;
-`;
-
-const HoldingsWrapper = styled.span`
-  display: flex;
-  flex-direction: column;
-  text-align: right;
 `;
 
 const Exchange = styled.span`
-  width: 4rem;
-  padding-bottom: 10px;
   font-weight: bold;
 `;
 
@@ -157,74 +162,81 @@ const Date = styled.span`
   width: 4.75rem;
 `;
 
-const CoinData = styled.div`
+const PriceWrapper = styled.span`
   display: flex;
-  text-align: center;
-  justify-content: space-between;
-  width: 100%;
+  flex-direction: column;
+  padding-left: 0.75rem;
+  text-align: right;
 `;
 
 const CoinPrice = styled.span`
-  width: 5rem;
-  padding-bottom: 10px;
   font-weight: bold;
+  width: 5rem;
 `;
 
 const BuyOrSell = styled.span`
   width: 5rem;
 `;
 
+const HoldingsWrapper = styled.span`
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-left: 0.5rem;
+  text-align: right;
+`;
+
 const HoldingsBuy = styled.span`
-  width: 5rem;
-  padding-bottom: 10px;
-  font-weight: bold;
   color: green;
+  font-weight: bold;
+  width: 5rem;
 `;
 
 const HoldingsSell = styled.span`
-  width: 5rem;
-  padding-bottom: 10px;
-  font-weight: bold;
   color: red;
+  font-weight: bold;
+  padding-bottom: 10px;
+  width: 5rem;
 `;
 
 const QuantityBuy = styled.span`
-  width: 5rem;
   color: green;
   text-transform: uppercase;
+  width: 5rem;
 `;
 
 const QuantitySell = styled.span`
-  width: 5rem;
   color: red;
   text-transform: uppercase;
+  width: 5rem;
 `;
 
-const TrashCanImage = styled(TrashCan)`
-  height: 1.75rem;
-  width: 1.75rem;
-  margin-left: 10px;
+const TrashCanImage = styled.img`
   cursor: pointer;
+  height: 1.75rem;
+  margin-left: 3rem;
+  width: 1.75rem;
 `;
 
 const AddButton = styled.button`
-  background: linear-gradient(135deg, #ffc608, #f7931a, #b1583e);
-  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    var(--primary-light),
+    var(--primary),
+    var(--primary-dark)
+  );
   border: none;
-  width: 3.25rem;
-  height: 3.25rem;
-  bottom: 8rem;
-  right: 1.5rem;
+  border-radius: 50%;
   cursor: pointer;
-  position: ${(props) => (props.isStatic ? 'static' : 'fixed')};
+  display: grid;
+  height: 3rem;
+  place-items: center;
+  width: 3rem;
 `;
 
 const AddSign = styled(PlusIcon)`
   border-radius: 50%;
-  width: 1.65rem;
-  height: 1.65rem;
-  bottom: 8.75rem;
-  right: 2.3rem;
   cursor: pointer;
-  position: ${(props) => (props.isStatic ? 'static' : 'fixed')};
+  height: 1.65rem;
+  width: 1.65rem;
 `;
