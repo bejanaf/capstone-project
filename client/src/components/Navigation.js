@@ -48,7 +48,7 @@ const NavigationWrapper = styled.div`
       var(--black) 0.1px,
       var(--black) 0.2px
     ),
-    linear-gradient(to top, var(--black) 60%, var(--primary));
+    linear-gradient(to top, var(--black) 60%, var(--primary-light));
   bottom: 0;
   color: var(--white);
   display: flex;
@@ -66,10 +66,10 @@ const NavigationWrapper = styled.div`
   }
 
   .active {
-    color: var(--primary);
+    color: var(--primary-light);
     svg {
       path {
-        fill: var(--primary);
+        fill: var(--primary-light);
       }
     }
   }

@@ -1,5 +1,6 @@
 import styled from 'styled-components';
-import { ReactComponent as FavoriteIcon } from '../image/btc-icon.svg';
+import favoriteNewsIconOne from '../image/favoriteNews1.png';
+import favoriteNewsIconTwo from '../image/favoriteNews2.png';
 
 export default function NewsCard({ articles, onToggleBookmarkNews }) {
   return (
@@ -19,12 +20,15 @@ export default function NewsCard({ articles, onToggleBookmarkNews }) {
             article.description === 0 ||
             article.author === null ? null : (
               <ArticleWrapper>
-                <FavoriteButton>
-                  <FavoriteIcon
-                    alt="Bookmark Icon"
-                    onClick={() => onToggleBookmarkNews(article)}
-                  />
-                </FavoriteButton>
+                <FavoriteIcon
+                  src={
+                    article.isFavorite
+                      ? favoriteNewsIconTwo
+                      : favoriteNewsIconOne
+                  }
+                  alt="Bookmark Icon"
+                  onClick={() => onToggleBookmarkNews(article)}
+                />
                 <NewsImage src={article.urlToImage} alt="Image of article" />
                 <Title>{article.title}</Title>
                 <TitleAndAutorWrapper>
@@ -60,20 +64,12 @@ const ArticleWrapper = styled.div`
   }
 `;
 
-const FavoriteButton = styled.button`
-  background-color: transparent;
-  border: none;
+const FavoriteIcon = styled.img`
+  height: 3.5rem;
+  width: 3.5;
   cursor: pointer;
-  right: 10%;
+  right: 5%;
   position: absolute;
-
-  svg {
-    fill: orange;
-    height: 2.5rem;
-    stroke: var(--black);
-    stroke-width: 15px;
-    width: 2.5rem;
-  }
 `;
 
 const TitleAndAutorWrapper = styled.div`

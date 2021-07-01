@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import Navigation from '../components/Navigation';
 import NewsCard from '../components/NewsCard';
+import ShowLogo from '../components/Header';
 
 export default function News({ articles, onToggleBookmarkNews }) {
   console.log('show input', articles);
@@ -8,7 +9,10 @@ export default function News({ articles, onToggleBookmarkNews }) {
   return (
     <>
       <NewsWrapper>
-        <HeadLiner>Latest News</HeadLiner>
+        <HeadLiner>
+          <ShowLogo />
+          Latest News
+        </HeadLiner>
         <NewsCard
           articles={articles}
           onToggleBookmarkNews={onToggleBookmarkNews}
@@ -20,7 +24,9 @@ export default function News({ articles, onToggleBookmarkNews }) {
 }
 
 const HeadLiner = styled.h1`
+  font-size: 2rem;
   text-align: center;
+  margin-bottom: 0.5rem;
 `;
 
 const NewsWrapper = styled.section`
