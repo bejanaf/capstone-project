@@ -47,6 +47,7 @@ function App() {
         setArticles(updatedNews);
       })
       .catch((error) => console.error(error.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -66,6 +67,7 @@ function App() {
         setTopCoins(updatedTopCoins);
       })
       .catch((error) => console.error(error.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
@@ -131,6 +133,7 @@ function App() {
           <Wallet
             favoriteCoins={favoriteCoins}
             exchanges={exchanges}
+            selectedCoin={selectedCoin}
             onSetSelectedCoin={setSelectedCoin}
             walletOverview={walletOverview}
             onSetWalletOverview={setWalletOverview}

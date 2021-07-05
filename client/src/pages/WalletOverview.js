@@ -1,66 +1,99 @@
 import styled from 'styled-components/macro';
+import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import { ReactComponent as Close } from '../image/close.svg';
 import { ReactComponent as PlusIcon } from '../image/add.svg';
 import TrashCan from '../image/delete.png';
+
 export default function WalletOverview({
-  historicalCoins,
   selectedCoin,
   onSetWalletOverview,
   onSetFormView,
   portfolioCoins,
+  onSetPortfolioCoins,
+  totalCoinBalance,
 }) {
+  function removeBuySellOrder(portfolioEntryToRemove) {
+    const portfolioEntryToKeep = portfolioCoins.filter(
+      (entry) =>
+        entry.price !== portfolioEntryToRemove.price ||
+        entry.exchange !== portfolioEntryToRemove.exchange ||
+        entry.quantity !== portfolioEntryToRemove.quantity
+    );
+    onSetPortfolioCoins(portfolioEntryToKeep);
+  }
+
   return (
     <Modal>
       <div className="modal_open">
         {selectedCoin !== undefined && (
           <ContentWrapper>
             <HeadlineWrapper>
-              <Headline>{selectedCoin.name} History</Headline>
+              <Headline>{selectedCoin.name} Wallet</Headline>
               <CloseIcon
                 title="Close"
                 role="img"
                 onClick={() => onSetWalletOverview(false)}
               />
             </HeadlineWrapper>
+            <BalanceWrapper>
+              <BalanceTitle>Balance:</BalanceTitle>
+              {totalCoinBalance >= 0 ? (
+                <BalanceValue style={{ color: 'green' }}>
+                  {totalCoinBalance} $
+                </BalanceValue>
+              ) : (
+                <BalanceValue style={{ color: 'red' }}>
+                  {totalCoinBalance} $
+                </BalanceValue>
+              )}
+            </BalanceWrapper>
             <TableDescription>
               <TableName>Name</TableName>
               <TablePrice>Price</TablePrice>
               <span>Value</span>
             </TableDescription>
-            {portfolioCoins.map((coin, index) => (
-              <CoinWrapper key={index + coin}>
-                <ExchangeWrapper>
-                  <Exchange>{coin.exchange}</Exchange>
-                  <Date>{coin.date}</Date>
-                </ExchangeWrapper>
-                <PriceWrapper>
-                  <CoinPrice>${parseInt(coin.price).toFixed(2)}</CoinPrice>
-                  <BuyOrSell>{coin.buyOrSell}</BuyOrSell>
-                </PriceWrapper>
-                <HoldingsWrapper>
-                  {coin.buyOrSell === 'buy' ? (
-                    <HoldingsBuy>
-                      ${parseInt(coin.price * coin.quantity).toFixed(2)}
-                    </HoldingsBuy>
-                  ) : (
-                    <HoldingsSell>
-                      ${parseInt(coin.price * coin.quantity).toFixed(2)}
-                    </HoldingsSell>
-                  )}
-                  {coin.buyOrSell === 'buy' ? (
-                    <QuantityBuy>
-                      {coin.quantity} {coin.symbol}
-                    </QuantityBuy>
-                  ) : (
-                    <QuantitySell>
-                      {coin.quantity * -1} {coin.symbol}
-                    </QuantitySell>
-                  )}
-                  <TrashCanImage title="TrashCan" src={TrashCan} />
-                </HoldingsWrapper>
-              </CoinWrapper>
-            ))}
+            {portfolioCoins
+              .filter(
+                (portfolioCoin) => portfolioCoin.name === selectedCoin.name
+              )
+              .map((coin, index) => (
+                <CoinWrapper key={index + coin}>
+                  <ExchangeWrapper>
+                    <Exchange>{coin.exchange}</Exchange>
+                    <Date>{coin.date}</Date>
+                  </ExchangeWrapper>
+                  <PriceWrapper>
+                    <CoinPrice>{parseInt(coin.price).toFixed(2)} $</CoinPrice>
+                    <BuyOrSell>{coin.buyOrSell}</BuyOrSell>
+                  </PriceWrapper>
+                  <HoldingsWrapper>
+                    {coin.buyOrSell === 'buy' ? (
+                      <HoldingsBuy>
+                        {parseInt(coin.price * coin.quantity).toFixed(2)} $
+                      </HoldingsBuy>
+                    ) : (
+                      <HoldingsSell>
+                        {parseInt(coin.price * coin.quantity).toFixed(2)} $
+                      </HoldingsSell>
+                    )}
+                    {coin.buyOrSell === 'buy' ? (
+                      <QuantityBuy>
+                        {coin.quantity} {coin.symbol}
+                      </QuantityBuy>
+                    ) : (
+                      <QuantitySell>
+                        {coin.quantity * -1} {coin.symbol}
+                      </QuantitySell>
+                    )}
+                    <TrashCanImage
+                      title="TrashCan"
+                      src={TrashCan}
+                      onClick={() => removeBuySellOrder(coin)}
+                    />
+                  </HoldingsWrapper>
+                </CoinWrapper>
+              ))}
             <AddButton onClick={() => onSetFormView(true)}>
               <AddSign title="Plus" role="img" />
             </AddButton>
@@ -72,6 +105,14 @@ export default function WalletOverview({
     </Modal>
   );
 }
+
+WalletOverview.propTypes = {
+  selectedCoin: PropTypes.object,
+  onSetWalletOverview: PropTypes.func,
+  onSetFormView: PropTypes.func,
+  portfolioCoins: PropTypes.array,
+  onSetPortfolioCoins: PropTypes.func,
+};
 
 const Modal = styled.div`
   position: relative;
@@ -121,10 +162,31 @@ const Headline = styled.h2`
 
 const CloseIcon = styled(Close)`
   cursor: pointer;
-  height: 1.5rem;
+  height: 2rem;
   position: absolute;
   right: -3rem;
-  width: 1.5rem;
+  width: 2rem;
+`;
+
+const BalanceWrapper = styled.div`
+  border-radius: 1vw;
+  display: flex;
+  justify-content: flex-end;
+  padding-right: 0.2rem;
+  margin-left: 8rem;
+  margin-bottom: 1rem;
+  text-align: right;
+  border-bottom: 2px solid var(--primary);
+`;
+
+const BalanceTitle = styled.span`
+  padding-left: 0.2rem;
+  padding-right: 1rem;
+`;
+
+const BalanceValue = styled.span`
+  font-style: italic;
+  font-weight: bold;
 `;
 
 const TableDescription = styled.section`
@@ -166,7 +228,7 @@ const PriceWrapper = styled.span`
   display: flex;
   flex-direction: column;
   padding-left: 0.75rem;
-  text-align: right;
+  text-align: center;
 `;
 
 const CoinPrice = styled.span`
@@ -182,7 +244,6 @@ const HoldingsWrapper = styled.span`
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding-left: 0.5rem;
   text-align: right;
 `;
 
@@ -195,7 +256,6 @@ const HoldingsBuy = styled.span`
 const HoldingsSell = styled.span`
   color: red;
   font-weight: bold;
-  padding-bottom: 10px;
   width: 5rem;
 `;
 

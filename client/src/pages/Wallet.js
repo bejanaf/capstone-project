@@ -22,7 +22,8 @@ export default function Wallet({
   const [portfolioCoins, setPortfolioCoins] = useState(
     loadFromLocal('portfolioCoins') ?? []
   );
-  /*   const [totalCoinBalance, setTotalCoinBalance] = useState({}); */
+  const [totalCoinBalance, setTotalCoinBalance] = useState(0);
+  console.log('Balance:', totalCoinBalance);
 
   useEffect(() => {
     saveToLocal('portfolioCoins', portfolioCoins);
@@ -31,30 +32,29 @@ export default function Wallet({
   function addCoin(portfolioCoin) {
     setPortfolioCoins([...portfolioCoins, portfolioCoin]);
   }
-  /* 
-  function calculateTotalBalance() {
-    const boughtCoins = portfolioCoins.filter(
-      (boughtCoin) => boughtCoin.buyOrSell === 'buy'
-    );
-    const totalBuy = boughtCoins.reduce(
-      (a, b) => parseFloat(a) + parseFloat(b.value),
-      0
-    );
 
-    const soldTotal = portfolioCoins.filter(
-      (soldCoins) => soldCoins.buyOrSell === 'sell'
-    );
-    const totalSell = soldTotal.reduce(
-      (a, b) => parseFloat(a) + parseFloat(b.value),
-      0
-    );
+  useEffect(() => {
+    function calculateTotalBalance() {
+      const boughtCoins = portfolioCoins.filter(
+        (boughtCoin) => boughtCoin.buyOrSell === 'buy'
+      );
+      const totalBuy = boughtCoins.reduce(
+        (a, b) => parseFloat(a) + parseFloat(b.value),
+        0
+      );
+      const soldTotal = portfolioCoins.filter(
+        (soldCoins) => soldCoins.buyOrSell === 'sell'
+      );
+      const totalSell = soldTotal.reduce(
+        (a, b) => parseFloat(a) + parseFloat(b.value),
+        0
+      );
+      const totalBalance = totalBuy - totalSell;
+      setTotalCoinBalance(totalBalance);
+    }
+    calculateTotalBalance();
+  }, [portfolioCoins]);
 
-    const totalBalance = totalBuy - totalSell;
-    setTotalCoinBalance(totalBalance);
-    console.log('TotalCoinBalance', totalBalance);
-    return totalBalance;
-  }
- */
   return (
     <>
       <Headliner>
@@ -79,7 +79,7 @@ export default function Wallet({
           walletOverview={walletOverview}
           onSetFormView={setFormView}
           onSetPortfolioCoins={setPortfolioCoins}
-          /*           onCalculateTotalBalance={calculateTotalBalance} */
+          totalCoinBalance={totalCoinBalance}
         />
       )}
       {favoriteCoins.map((favoriteCoin, index) => (
@@ -108,6 +108,7 @@ Wallet.propTypes = {
 };
 
 const Headliner = styled.h1`
-  text-align: center;
   margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 0rem 0rem 0.9rem var(--primary), 0rem 0rem 0.5rem var(--primary);
 `;

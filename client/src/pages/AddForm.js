@@ -10,7 +10,6 @@ export default function AddForm({
   exchanges,
   onSetFormView,
   selectedCoin,
-  /*   onCalculateTotalBalance, */
 }) {
   const initialCoinState = {
     name: selectedCoin.name,
@@ -44,9 +43,8 @@ export default function AddForm({
   function handleFormSubmit(event) {
     event.preventDefault();
     if (validateEntry(portfolioCoin)) {
-      const coinWithTotalValue = addPrice(portfolioCoin);
-      onAddCoin(coinWithTotalValue);
-      /*       onCalculateTotalBalance(); */
+      const coinWithTotalValueEntry = addPrice(portfolioCoin);
+      onAddCoin(coinWithTotalValueEntry);
       setPortfolioCoin(initialCoinState);
       onSetFormView(false);
       setIsError(false);
@@ -118,8 +116,10 @@ export default function AddForm({
             placeholder="Please select..."
           >
             <option value="Please select...">Please select...</option>
-            {exchanges.map((exchange) => (
-              <option value={exchange.name}>{exchange.name}</option>
+            {exchanges.map((exchange, index) => (
+              <option key={index + exchange.name} value={exchange.name}>
+                {exchange.name}
+              </option>
             ))}
           </select>
           {isError && (
@@ -138,7 +138,7 @@ export default function AddForm({
 AddForm.propTypes = {
   onAddCoin: PropTypes.func,
   exchanges: PropTypes.array,
-  selectedCoin: PropTypes.array,
+  selectedCoin: PropTypes.object,
   onSetFormView: PropTypes.func,
 };
 

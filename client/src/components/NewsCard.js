@@ -1,57 +1,42 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import favoriteNewsIconOne from '../image/favoriteNews1.png';
 import favoriteNewsIconTwo from '../image/favoriteNews2.png';
 
-export default function NewsCard({ articles, onToggleBookmarkNews }) {
+export default function NewsCard({ article, onToggleBookmarkNews }) {
   return (
     <>
-      {articles
-        .filter(
-          (article, index) =>
-            !articles.some(
-              (articleToCheck, articleToCheckIndex) =>
-                articleToCheck.title === article.title &&
-                articleToCheckIndex !== index
-            )
-        )
-        .map((article, index) => (
-          <section key={index + article}>
-            {article.urlToImage === null ||
-            article.description === 0 ||
-            article.author === null ? null : (
-              <ArticleWrapper>
-                <FavoriteIcon
-                  src={
-                    article.isFavorite
-                      ? favoriteNewsIconTwo
-                      : favoriteNewsIconOne
-                  }
-                  alt="Bookmark Icon"
-                  onClick={() => onToggleBookmarkNews(article)}
-                />
-                <NewsImage src={article.urlToImage} alt="Image of article" />
-                <Title>{article.title}</Title>
-                <TitleAndAutorWrapper>
-                  <Author>{article.author}</Author>
-                  <PublishedAt>
-                    {article.publishedAt.slice(0, 10)}{' '}
-                    {article.publishedAt.slice(11, 19)}
-                  </PublishedAt>{' '}
-                </TitleAndAutorWrapper>
-                <p>
-                  {article.description}
-                  <a href={article.url} alt="Link of article">
-                    {' '}
-                    Go to full article
-                  </a>
-                </p>
-              </ArticleWrapper>
-            )}
-          </section>
-        ))}
+      <ArticleWrapper>
+        <FavoriteIcon
+          src={article.isFavorite ? favoriteNewsIconTwo : favoriteNewsIconOne}
+          alt="Bookmark Icon"
+          onClick={() => onToggleBookmarkNews(article)}
+        />
+        <NewsImage src={article.urlToImage} alt="Image of article" />
+        <Title>{article.title}</Title>
+        <TitleAndAutorWrapper>
+          <Author>{article.author}</Author>
+          <PublishedAt>
+            {article.publishedAt.slice(0, 10)}{' '}
+            {article.publishedAt.slice(11, 19)}
+          </PublishedAt>{' '}
+        </TitleAndAutorWrapper>
+        <p>
+          {article.description}
+          <a href={article.url} alt="Link of article">
+            {' '}
+            Go to full article
+          </a>
+        </p>
+      </ArticleWrapper>
     </>
   );
 }
+
+NewsCard.propTypes = {
+  articles: PropTypes.array,
+  onToggleBookmarkNews: PropTypes.func,
+};
 
 const ArticleWrapper = styled.div`
   background-color: var(--grey-darkest);

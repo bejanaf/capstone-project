@@ -1,6 +1,7 @@
 import styled from 'styled-components';
+import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
-import CoinsCard from '../components/CoinsCard';
+import CoinsCard from '../components/CoinsCard.js';
 import ShowLogo from '../components/Header';
 
 export default function TopCoins({
@@ -17,6 +18,7 @@ export default function TopCoins({
       </HeadLiner>
       {topCoins.map((topCoin, index) => (
         <CoinsCard
+          key={index + topCoin}
           index={index}
           topCoin={topCoin}
           onToggleFavoriteCoins={onToggleFavoriteCoins}
@@ -29,7 +31,15 @@ export default function TopCoins({
   );
 }
 
+TopCoins.propTypes = {
+  topCoin: PropTypes.arrayOf(Object),
+  onToggleFavoriteCoins: PropTypes.func,
+  onSetSelectedCoin: PropTypes.func,
+  onSetWalletOverview: PropTypes.func,
+};
+
 const HeadLiner = styled.h1`
-  text-align: center;
   margin-bottom: 0.5rem;
+  text-align: center;
+  text-shadow: 0rem 0rem 0.9rem var(--primary), 0rem 0rem 0.5rem var(--primary);
 `;
