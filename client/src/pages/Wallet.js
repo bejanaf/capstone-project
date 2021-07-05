@@ -1,6 +1,7 @@
 import styled from 'styled-components/macro';
+import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
-import CoinsCard from '../components/CoinsCard';
+import FavoriteCoinsCard from '../components/FavoriteCoins.js';
 import { useState, useEffect } from 'react';
 import { saveToLocal, loadFromLocal } from '../lib/localStorage';
 import WalletOverview from './WalletOverview';
@@ -11,15 +12,17 @@ export default function Wallet({
   favoriteCoins,
   exchanges,
   walletOverview,
+  selectedCoin,
   onSetWalletOverview,
   onToggleFavoriteCoins,
+  onSetSelectedCoin,
 }) {
-  const [selectedCoin, setSelectedCoin] = useState({});
   const [historicalCoins, setHistoricalCoins] = useState([]);
   const [formView, setFormView] = useState(false);
   const [portfolioCoins, setPortfolioCoins] = useState(
     loadFromLocal('portfolioCoins') ?? []
   );
+  /*   const [totalCoinBalance, setTotalCoinBalance] = useState({}); */
 
   useEffect(() => {
     saveToLocal('portfolioCoins', portfolioCoins);
@@ -28,7 +31,30 @@ export default function Wallet({
   function addCoin(portfolioCoin) {
     setPortfolioCoins([...portfolioCoins, portfolioCoin]);
   }
+  /* 
+  function calculateTotalBalance() {
+    const boughtCoins = portfolioCoins.filter(
+      (boughtCoin) => boughtCoin.buyOrSell === 'buy'
+    );
+    const totalBuy = boughtCoins.reduce(
+      (a, b) => parseFloat(a) + parseFloat(b.value),
+      0
+    );
 
+    const soldTotal = portfolioCoins.filter(
+      (soldCoins) => soldCoins.buyOrSell === 'sell'
+    );
+    const totalSell = soldTotal.reduce(
+      (a, b) => parseFloat(a) + parseFloat(b.value),
+      0
+    );
+
+    const totalBalance = totalBuy - totalSell;
+    setTotalCoinBalance(totalBalance);
+    console.log('TotalCoinBalance', totalBalance);
+    return totalBalance;
+  }
+ */
   return (
     <>
       <Headliner>
@@ -52,12 +78,15 @@ export default function Wallet({
           onSetWalletOverview={onSetWalletOverview}
           walletOverview={walletOverview}
           onSetFormView={setFormView}
+          onSetPortfolioCoins={setPortfolioCoins}
+          /*           onCalculateTotalBalance={calculateTotalBalance} */
         />
       )}
-      {favoriteCoins.map((favoriteCoin) => (
-        <CoinsCard
+      {favoriteCoins.map((favoriteCoin, index) => (
+        <FavoriteCoinsCard
+          key={index + favoriteCoin}
           topCoin={favoriteCoin}
-          onSetSelectedCoin={setSelectedCoin}
+          onSetSelectedCoin={onSetSelectedCoin}
           historicalCoins={historicalCoins}
           onSetHistoricalCoins={setHistoricalCoins}
           onSetWalletOverview={onSetWalletOverview}
@@ -69,6 +98,14 @@ export default function Wallet({
     </>
   );
 }
+
+Wallet.propTypes = {
+  favoriteCoins: PropTypes.array,
+  exchanges: PropTypes.array,
+  walletOverview: PropTypes.bool,
+  onSetWalletOverview: PropTypes.func,
+  onToggleFavoriteCoins: PropTypes.func,
+};
 
 const Headliner = styled.h1`
   text-align: center;

@@ -1,13 +1,16 @@
 import styled from 'styled-components/macro';
+import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
-import { loadFromLocal, saveToLocal } from '../lib/localStorage';
+import { saveToLocal } from '../lib/localStorage';
 import { ReactComponent as Close } from '../image/close.svg';
 import validateEntry from '../lib/validation';
+
 export default function AddForm({
   onAddCoin,
   exchanges,
-  selectedCoin,
   onSetFormView,
+  selectedCoin,
+  /*   onCalculateTotalBalance, */
 }) {
   const initialCoinState = {
     name: selectedCoin.name,
@@ -15,16 +18,13 @@ export default function AddForm({
     image: selectedCoin.image,
     buyOrSell: '',
     exchange: '',
-    price: '',
-    quantity: '',
+    price: 0,
+    quantity: 0,
+    total: 0,
     date: '',
-    note: '',
   };
 
-  const [portfolioCoin, setPortfolioCoin] = useState(
-    loadFromLocal('portfolioCoin') ?? initialCoinState
-  );
-
+  const [portfolioCoin, setPortfolioCoin] = useState(initialCoinState);
   const [isError, setIsError] = useState(false);
   useEffect(() => {
     saveToLocal('portfolioCoin', portfolioCoin);
@@ -36,10 +36,17 @@ export default function AddForm({
     setPortfolioCoin({ ...portfolioCoin, [fieldName]: fieldValue });
   }
 
+  function addPrice(coin) {
+    coin.value = Number(+coin.price * +coin.quantity);
+    return coin;
+  }
+
   function handleFormSubmit(event) {
     event.preventDefault();
     if (validateEntry(portfolioCoin)) {
-      onAddCoin(portfolioCoin);
+      const coinWithTotalValue = addPrice(portfolioCoin);
+      onAddCoin(coinWithTotalValue);
+      /*       onCalculateTotalBalance(); */
       setPortfolioCoin(initialCoinState);
       onSetFormView(false);
       setIsError(false);
@@ -84,7 +91,7 @@ export default function AddForm({
             type="text"
             name="price"
             onChange={updateCoin}
-            value={portfolioCoin.price}
+            value={Number(portfolioCoin.price)}
             placeholder="In USD"
           />
           <label htmlFor="quantity">Quantity*</label>
@@ -92,7 +99,7 @@ export default function AddForm({
             type="text"
             name="quantity"
             onChange={updateCoin}
-            value={portfolioCoin.quantity}
+            value={Number(portfolioCoin.quantity)}
             placeholder="0"
           />
           <label htmlFor="date">Date</label>
@@ -115,14 +122,6 @@ export default function AddForm({
               <option value={exchange.name}>{exchange.name}</option>
             ))}
           </select>
-          <label htmlFor="note">Note</label>
-          <input
-            type="text"
-            name="note"
-            onChange={updateCoin}
-            value={portfolioCoin.note}
-            placeholder="Tap to add a note"
-          />
           {isError && (
             <ErrorBox isError={isError}>
               Missing or wrong entries. Please check your input.
@@ -135,6 +134,13 @@ export default function AddForm({
     </Modal>
   );
 }
+
+AddForm.propTypes = {
+  onAddCoin: PropTypes.func,
+  exchanges: PropTypes.array,
+  selectedCoin: PropTypes.array,
+  onSetFormView: PropTypes.func,
+};
 
 const Modal = styled.div`
   position: relative;
