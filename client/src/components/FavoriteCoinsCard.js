@@ -1,8 +1,15 @@
-import styled from 'styled-components';
+import styled from 'styled-components/macro';
 import PropTypes from 'prop-types';
 import favoriteIcon from '../image/star.png';
 
-export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
+export default function FavoriteCoinsCard({
+  index,
+  topCoin,
+  onToggleFavoriteCoins,
+  onSetSelectedCoin,
+  onSetWalletOverview,
+  walletOverview,
+}) {
   function ShortenLargeNumbers(num) {
     if (num > 999999999) {
       return Math.sign(num) * (Math.abs(num) / 1000000000).toFixed(1) + ' B';
@@ -10,7 +17,6 @@ export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
       return Math.sign(num) * (Math.abs(num) / 1000000).toFixed(1) + ' M';
     }
   }
-
   return (
     <>
       <CoinWrapper key={index + topCoin}>
@@ -30,7 +36,12 @@ export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
             </span>
             <CoinSymbole>{topCoin.symbol}</CoinSymbole>
           </CoinNameSymbole>
-          <CoinPriceChange>
+          <CoinPriceChange
+            onClick={() => {
+              onSetSelectedCoin(topCoin);
+              onSetWalletOverview(!walletOverview);
+            }}
+          >
             <CoinPricePercent>Price / 24h % </CoinPricePercent>
             <span>{topCoin.current_price.toFixed(2)} $</span>
             {topCoin.price_change_percentage_24h > 0 ? (
@@ -43,7 +54,12 @@ export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
               </NegativePrice>
             )}
           </CoinPriceChange>
-          <CoinCapVolume>
+          <CoinCapVolume
+            onClick={() => {
+              onSetSelectedCoin(topCoin);
+              onSetWalletOverview(!walletOverview);
+            }}
+          >
             <CoinMarketCapVolume>Market Cap/Volume</CoinMarketCapVolume>
             <span>{ShortenLargeNumbers(topCoin.market_cap)}</span>
             <span>{ShortenLargeNumbers(topCoin.total_volume)}</span>
@@ -54,10 +70,13 @@ export default function CoinsCard({ index, topCoin, onToggleFavoriteCoins }) {
   );
 }
 
-CoinsCard.propTypes = {
+FavoriteCoinsCard.propTypes = {
   index: PropTypes.number,
   topCoin: PropTypes.object,
   onToggleFavoriteCoins: PropTypes.func,
+  onSetSelectedCoin: PropTypes.func,
+  onSetWalletOverview: PropTypes.func,
+  walletOverview: PropTypes.bool,
 };
 
 const CoinWrapper = styled.div`
@@ -66,12 +85,11 @@ const CoinWrapper = styled.div`
   flex-direction: column;
   padding-bottom: 0.2rem;
   width: 100vw;
-
   section {
     display: flex;
+    cursor: pointer;
   }
 `;
-
 const CoinNameSymbole = styled.div`
   display: flex;
   flex-direction: column;
@@ -79,7 +97,6 @@ const CoinNameSymbole = styled.div`
   margin-top: 0.3rem;
   width: 33vw;
 `;
-
 const CoinImage = styled.img`
   background-color: white;
   border-radius: 50%;
@@ -87,43 +104,35 @@ const CoinImage = styled.img`
   padding: 0.1rem;
   width: 1.1rem;
 `;
-
 const FavoriteIcon = styled.img`
   cursor: pointer;
   height: 1.1rem;
   width: 1.1rem;
 `;
-
 const CoinSymbole = styled.span`
   text-transform: uppercase;
 `;
-
 const CoinPriceChange = styled.div`
   display: flex;
   flex-direction: column;
   width: 33vw;
 `;
-
 const PositivePrice = styled.span`
   color: green;
 `;
-
 const NegativePrice = styled.span`
   color: red;
 `;
-
 const CoinPricePercent = styled.span`
   align-items: flex-end;
   display: flex;
   font-size: 0.7rem;
   height: 1.344rem;
 `;
-
 const CoinCapVolume = styled.div`
   display: flex;
   flex-direction: column;
 `;
-
 const CoinMarketCapVolume = styled.span`
   align-items: flex-end;
   display: flex;

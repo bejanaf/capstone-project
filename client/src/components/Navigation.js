@@ -5,9 +5,9 @@ import { ReactComponent as BitcoinIcon } from '../image/btc-icon.svg';
 import { ReactComponent as WalletIcon } from '../image/wallet.svg';
 import { ReactComponent as TopCoinsIcon } from '../image/topCoins.svg';
 
-export default function Navigation() {
+export default function Navigation({ isStatic }) {
   return (
-    <NavigationWrapper>
+    <NavigationWrapper isStatic={isStatic}>
       <NavLinkStyled to="/news" className="navButton">
         <IconNameWrapper>
           <NewsIcon />
@@ -48,7 +48,7 @@ const NavigationWrapper = styled.div`
       var(--black) 0.1px,
       var(--black) 0.2px
     ),
-    linear-gradient(to top, var(--black) 60%, var(--primary));
+    linear-gradient(to top, var(--black) 60%, var(--primary-light));
   bottom: 0;
   color: var(--white);
   display: flex;
@@ -56,8 +56,8 @@ const NavigationWrapper = styled.div`
   left: 0;
   padding-bottom: 0.4rem;
   padding-top: 0.9rem;
-  position: fixed;
-  width: 100%;
+  position: ${(props) => (props.isStatic ? 'static' : 'fixed')};
+  width: ${(props) => (props.isStatic ? 'auto' : '100%')};
 
   svg {
     width: 1.5rem;
@@ -66,10 +66,10 @@ const NavigationWrapper = styled.div`
   }
 
   .active {
-    color: var(--primary);
+    color: var(--primary-light);
     svg {
       path {
-        fill: var(--primary);
+        fill: var(--primary-light);
       }
     }
   }
