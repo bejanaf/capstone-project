@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import CoinsCard from '../components/CoinsCard.js';
-import ShowLogo from '../components/Header';
+import Header from '../components/Header';
 
 export default function TopCoins({
   topCoins,
@@ -13,7 +13,7 @@ export default function TopCoins({
   return (
     <>
       <HeadLiner>
-        <ShowLogo />
+        <Header />
         Top 25 Currencys
       </HeadLiner>
       {topCoins.map((topCoin, index) => (

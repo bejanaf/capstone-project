@@ -47,9 +47,9 @@ const PageWrapper = styled.div`
 `;
 
 const Headliner = styled.h1`
+  color: hsl(330, 100%, 85%);
   font-family: neon;
   font-size: 2rem;
-  color: hsl(330, 100%, 85%);
   text-shadow: 0 0 4px #f09, 0 0 10px #f09, 0 0 18px #fff, 0 0 38px #f09;
 `;
 

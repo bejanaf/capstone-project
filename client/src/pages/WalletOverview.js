@@ -169,14 +169,14 @@ const CloseIcon = styled(Close)`
 `;
 
 const BalanceWrapper = styled.div`
+  border-bottom: 2px solid var(--primary);
   border-radius: 1vw;
   display: flex;
   justify-content: flex-end;
   padding-right: 0.2rem;
-  margin-left: 8rem;
   margin-bottom: 1rem;
+  margin-left: 8rem;
   text-align: right;
-  border-bottom: 2px solid var(--primary);
 `;
 
 const BalanceTitle = styled.span`

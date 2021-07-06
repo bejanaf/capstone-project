@@ -1,7 +1,7 @@
 import styled from 'styled-components';
 import { ReactComponent as LogoIcon } from '../image/HeaderLogo.svg';
 
-export default function ShowLogo() {
+export default function Header() {
   return (
     <LogoStyle>
       <LogoIcon />

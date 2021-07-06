@@ -1,7 +1,7 @@
 import styled from 'styled-components/macro';
 import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
-import FavoriteCoinsCard from '../components/FavoriteCoins.js';
+import FavoriteCoinsCard from '../components/FavoriteCoinsCard.js';
 import { useState, useEffect } from 'react';
 import { saveToLocal, loadFromLocal } from '../lib/localStorage';
 import WalletOverview from './WalletOverview';
@@ -17,13 +17,11 @@ export default function Wallet({
   onToggleFavoriteCoins,
   onSetSelectedCoin,
 }) {
-  const [historicalCoins, setHistoricalCoins] = useState([]);
   const [formView, setFormView] = useState(false);
   const [portfolioCoins, setPortfolioCoins] = useState(
     loadFromLocal('portfolioCoins') ?? []
   );
   const [totalCoinBalance, setTotalCoinBalance] = useState(0);
-  console.log('Balance:', totalCoinBalance);
 
   useEffect(() => {
     saveToLocal('portfolioCoins', portfolioCoins);
@@ -72,7 +70,6 @@ export default function Wallet({
       )}
       {walletOverview && (
         <WalletOverview
-          historicalCoins={historicalCoins}
           portfolioCoins={portfolioCoins}
           selectedCoin={selectedCoin}
           onSetWalletOverview={onSetWalletOverview}
@@ -87,8 +84,6 @@ export default function Wallet({
           key={index + favoriteCoin}
           topCoin={favoriteCoin}
           onSetSelectedCoin={onSetSelectedCoin}
-          historicalCoins={historicalCoins}
-          onSetHistoricalCoins={setHistoricalCoins}
           onSetWalletOverview={onSetWalletOverview}
           walletOverview={walletOverview}
           onToggleFavoriteCoins={onToggleFavoriteCoins}

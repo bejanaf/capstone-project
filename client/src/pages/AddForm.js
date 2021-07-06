@@ -2,8 +2,8 @@ import styled from 'styled-components/macro';
 import PropTypes from 'prop-types';
 import { useState, useEffect } from 'react';
 import { saveToLocal } from '../lib/localStorage';
-import { ReactComponent as Close } from '../image/close.svg';
 import validateEntry from '../lib/validation';
+import { ReactComponent as Close } from '../image/close.svg';
 
 export default function AddForm({
   onAddCoin,

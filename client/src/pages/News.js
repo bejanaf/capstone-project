@@ -2,14 +2,14 @@ import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Navigation from '../components/Navigation';
 import NewsCard from '../components/NewsCard';
-import ShowLogo from '../components/Header';
+import Header from '../components/Header';
 
 export default function News({ articles, onToggleBookmarkNews }) {
   return (
     <>
       <NewsWrapper>
         <HeadLiner>
-          <ShowLogo />
+          <Header />
           Latest News
         </HeadLiner>
         {articles
