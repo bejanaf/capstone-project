@@ -28,13 +28,14 @@ export default createGlobalStyle`
 }
 
 body, h1, h2, h3, h4, h5, h6, ol, ul {
+    background-color: black;
+    color: white;
+    font-family: var(--ff-sans);
+    font-weight: normal;
     margin: 0;
+    margin-bottom: 0;
     margin-top: 0.5rem;
     padding: 0;
-    font-weight: normal;
-    color: white;
-    background-color: black;
-    font-family: var(--ff-sans);
 }
 
 a{

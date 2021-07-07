@@ -14,6 +14,9 @@ function App() {
   const [favoriteCoins, setFavoriteCoins] = useState(
     loadFromLocal('favoriteCoins') ?? []
   );
+  const [exchanges, setExchanges] = useState(loadFromLocal('exchanges' ?? []));
+  const [selectedCoin, setSelectedCoin] = useState({});
+  const [walletOverview, setWalletOverview] = useState(false);
 
   useEffect(() => {
     saveToLocal('bookmarks', bookmarks);
@@ -28,19 +31,30 @@ function App() {
   }, [favoriteCoins]);
 
   useEffect(() => {
+    saveToLocal('exchanges', exchanges);
+  }, [exchanges]);
+
+  useEffect(() => {
     fetch('/api/news')
       .then((res) => res.json())
-      .then((response) => {
-        console.log(response);
-        setArticles(response);
-      });
+      .then((articles) => {
+        const updatedNews = articles.map((article) => {
+          article.isFavorite = bookmarks.some(
+            (bookmark) => bookmark.title === article.title
+          );
+          return article;
+        });
+        setArticles(updatedNews);
+      })
+      .catch((error) => console.error(error.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   useEffect(() => {
     fetch(
       'https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=25&page=1&sparkline=false&price_change_percentage=24h'
     )
-      .then((result) => result.json())
+      .then((res) => res.json())
       .then((topCoins) => {
         const updatedTopCoins = topCoins.map((topCoin) => {
           return {
@@ -53,6 +67,14 @@ function App() {
         setTopCoins(updatedTopCoins);
       })
       .catch((error) => console.error(error.message));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    fetch('https://api.coingecko.com/api/v3/exchanges')
+      .then((result) => result.json())
+      .then((listOfExchanges) => setExchanges(listOfExchanges))
+      .catch((error) => console.error(error));
   }, []);
 
   function toggleBookmarkNews(bookmarkNews) {
@@ -63,7 +85,7 @@ function App() {
       return article;
     });
     setArticles(likedNews);
-    const favoriteArticles = articles.filter((article) => article.isFavorite);
+    const favoriteArticles = likedNews.filter((article) => article.isFavorite);
     setBookmarks(favoriteArticles);
   }
 
@@ -102,11 +124,21 @@ function App() {
             topCoins={topCoins}
             favoriteCoins={favoriteCoins}
             onToggleFavoriteCoins={toggleFavoriteCoins}
+            onSetSelectedCoin={setSelectedCoin}
+            onSetWalletOverview={setWalletOverview}
           />
         </Route>
 
         <Route path="/wallet">
-          <Wallet favoriteCoins={favoriteCoins} />
+          <Wallet
+            favoriteCoins={favoriteCoins}
+            exchanges={exchanges}
+            selectedCoin={selectedCoin}
+            onSetSelectedCoin={setSelectedCoin}
+            walletOverview={walletOverview}
+            onSetWalletOverview={setWalletOverview}
+            onToggleFavoriteCoins={toggleFavoriteCoins}
+          />
         </Route>
       </Switch>
     </div>
