@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { ReactComponent as Logo } from '../image/Logo.svg';
+import { ReactComponent as Logo } from '../image/logo.svg';
 
 export default function WelcomePage() {
   return (
